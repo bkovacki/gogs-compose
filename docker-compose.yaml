@@ -1,0 +1,26 @@
+services:
+  gogs:
+    image: gogs/gogs:latest
+    ports:
+      - "10022:22"
+      - "3000:3000"
+    volumes:
+      - "gogs-data:/data"
+      - "gogs-backup:/backup"
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    environment:
+      - "POSTGRES_USER=${POSTGRES_USER}"
+      - "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}"
+      - "POSTGRES_DB=gogs"
+
+volumes:
+  db-data:
+  gogs-data:
+  gogs-backup:
